@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Hiring Leads · Creative Engine</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --text: #1d2330; --muted: #5d6676; --line: #e3e6eb;
+    --accent: #1f5eff; --accent-text: #ffffff; --ok: #16794a; --ok-bg: #e5f5ec; --warn: #8a5a00; --warn-bg: #fff3d6;
+    --bad: #a3261b; --bad-bg: #fde7e4; --info: #1d4ed8; --info-bg: #e5edff; --grey-bg: #eef0f3;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12151b; --card: #1a1f27; --text: #e6e9ef; --muted: #9aa3b2; --line: #2b323d;
+      --accent: #5b8cff; --accent-text: #0b0e14; --ok: #5fd39a; --ok-bg: #143323; --warn: #f2c25b; --warn-bg: #3a2d10;
+      --bad: #ff8a7f; --bad-bg: #3b1915; --info: #9db7ff; --info-bg: #1a2647; --grey-bg: #242a34;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 20px 16px 60px; }
+  header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 14px; }
+  h1 { font-size: 20px; margin: 0; }
+  .muted { color: var(--muted); font-size: 13px; }
+  .banner { border-radius: 10px; padding: 10px 14px; margin: 0 0 14px; font-size: 14px; }
+  .banner.warn { background: var(--warn-bg); color: var(--warn); }
+  .banner.info { background: var(--info-bg); color: var(--info); }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 10px 0 16px; }
+  select, input[type=password], input[type=search] { font: inherit; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; }
+  button { font: inherit; border-radius: 8px; border: 1px solid var(--line); background: var(--card); color: var(--text); padding: 8px 12px; cursor: pointer; }
+  button:hover { border-color: var(--muted); }
+  button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 2px; }
+  .chip { font-size: 12px; padding: 3px 9px; border-radius: 999px; background: var(--grey-bg); color: var(--muted); cursor: pointer; border: 1px solid transparent; }
+  .chip.on { border-color: var(--accent); color: var(--text); }
+  .lead { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 6px 22px; }
+  @media (max-width: 760px) { .lead { grid-template-columns: 1fr; } }
+  .lead h2 { font-size: 16px; margin: 0 0 2px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .badge { font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--grey-bg); color: var(--muted); white-space: nowrap; }
+  .b-pending_approval { background: var(--warn-bg); color: var(--warn); }
+  .b-approved, .b-active, .b-completed { background: var(--info-bg); color: var(--info); }
+  .b-replied { background: var(--ok-bg); color: var(--ok); }
+  .b-bounced, .b-unsubscribed, .b-failed, .b-needs_attention { background: var(--bad-bg); color: var(--bad); }
+  .b-submitted { background: var(--grey-bg); color: var(--text); }
+  ul.roles { margin: 6px 0 0; padding-left: 18px; }
+  ul.roles li { margin: 2px 0; }
+  .label { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-top: 8px; }
+  .value { overflow-wrap: anywhere; }
+  .actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .actions button.sel-approve { background: var(--ok-bg); color: var(--ok); border-color: var(--ok); font-weight: 600; }
+  .actions button.sel-reject { background: var(--bad-bg); color: var(--bad); border-color: var(--bad); font-weight: 600; }
+  details { grid-column: 1 / -1; margin-top: 6px; }
+  summary { cursor: pointer; color: var(--accent); font-size: 14px; }
+  pre.email { white-space: pre-wrap; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px; font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; margin: 8px 0; }
+  .gate { max-width: 380px; margin: 12vh auto; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 24px; }
+  .gate input { width: 100%; margin: 12px 0 8px; }
+  .gate .row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+  .error { color: var(--bad); font-size: 13px; min-height: 18px; }
+  .empty { text-align: center; padding: 40px; color: var(--muted); }
+  footer { margin-top: 24px; font-size: 12px; color: var(--muted); }
+  .sticky { position: sticky; bottom: 12px; display: none; justify-content: center; }
+  .sticky .inner { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; box-shadow: 0 6px 24px rgba(0,0,0,.12); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+<div id="gate" class="gate" hidden>
+  <h1>Hiring leads</h1>
+  <div class="muted">Creative Engine · enter the page password</div>
+  <form id="gateForm">
+    <input id="pw" type="password" autocomplete="current-password" placeholder="Password" aria-label="Password" required>
+    <label class="row"><input id="remember" type="checkbox"> Remember on this device</label>
+    <div id="gateError" class="error" role="alert"></div>
+    <button class="primary" type="submit" style="width:100%">Open</button>
+  </form>
+</div>
+
+<div id="app" class="wrap" hidden>
+  <header>
+    <h1>Hiring leads · Creative Engine</h1>
+    <div class="muted" id="updated"></div>
+  </header>
+  <div id="banners"></div>
+  <div class="toolbar">
+    <select id="week" aria-label="Week"></select>
+    <button class="primary" id="approveAll">Approve all awaiting</button>
+    <button id="downloadCsv">Download CSV</button>
+    <button id="downloadXlsx">Download Excel</button>
+    <button id="downloadReport">Weekly report</button>
+    <input id="search" type="search" placeholder="Search company or email" aria-label="Search">
+    <button id="refresh" title="Load the latest data">Refresh</button>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div id="leads"></div>
+  <div class="sticky" id="sticky"><div class="inner">
+    <span id="selSummary"></span>
+    <button class="primary" id="submitSel">Submit decisions</button>
+    <button id="clearSel">Clear</button>
+  </div></div>
+  <footer id="footer"></footer>
+</div>
+
+<script>
+(() => {
+  "use strict";
+  const PW_KEY = "ce-board-pw", SUBMIT_KEY = "ce-board-submitted";
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch {} },
+    del(k) { try { localStorage.removeItem(k); } catch {} },
+  };
+  let data = null, password = null, batch = null, statusFilter = "all", lastDecisionUrl = null;
+  const selection = new Map();  // outreach id -> "approve" | "reject"
+
+  const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+  async function decrypt(blob, pw) {
+    const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
+    const key = await crypto.subtle.deriveKey({name: "PBKDF2", salt: b64(blob.salt), iterations: blob.iter, hash: "SHA-256"},
+      base, {name: "AES-GCM", length: 256}, false, ["decrypt"]);
+    const plain = await crypto.subtle.decrypt({name: "AES-GCM", iv: b64(blob.iv)}, key, b64(blob.ct));
+    if (!blob.gzip) return JSON.parse(new TextDecoder().decode(plain));
+    const stream = new Blob([plain]).stream().pipeThrough(new DecompressionStream("gzip"));
+    return JSON.parse(await new Response(stream).text());
+  }
+
+  async function load(pw) {
+    const res = await fetch("data.enc.json?t=" + Date.now(), {cache: "no-store"});
+    if (!res.ok) throw new Error("The data file could not be loaded (" + res.status + ").");
+    return decrypt(await res.json(), pw);
+  }
+
+  function fmt(iso) {
+    if (!iso) return "";
+    const d = new Date(iso);
+    return new Intl.DateTimeFormat("en-CA", {timeZone: data.send_tz, weekday: "short", month: "short", day: "numeric",
+      hour: "numeric", minute: "2-digit"}).format(d) + " (Toronto)";
+  }
+
+  function submitted() {
+    try { return JSON.parse(store.get(SUBMIT_KEY) || "{}"); } catch { return {}; }
+  }
+  function markSubmitted(ids) {
+    const s = submitted(), at = new Date().toISOString();
+    ids.forEach((id) => { s[id] = at; });
+    store.set(SUBMIT_KEY, JSON.stringify(s));
+  }
+  function isWaiting(lead) {
+    const at = submitted()[lead.id];
+    return at && lead.status === "pending_approval" && new Date(at) > new Date(data.generated_at);
+  }
+
+  function render() {
+    $("updated").textContent = "Updated " + fmt(data.generated_at);
+    const banners = [];
+    if (!data.sending_enabled) banners.push('<div class="banner warn">Sending is switched off: approved emails wait until SENDING_ENABLED is set to true in config.env.</div>');
+    const sel = $("week");
+    if (!sel.options.length) {
+      data.batches.forEach((b) => sel.add(new Option(`${b.week} · batch ${b.id} · ${b.leads.length} leads`, b.id)));
+      if (!data.batches.length) sel.add(new Option("No batches yet", ""));
+    }
+    batch = data.batches.find((b) => String(b.id) === sel.value) || data.batches[0] || null;
+    const waitingIds = batch ? batch.leads.filter(isWaiting).map((l) => l.id) : [];
+    if (waitingIds.length) {
+      const again = lastDecisionUrl ? ` If GitHub didn't open, <a href="${esc(lastDecisionUrl)}" target="_blank" rel="noopener">open the GitHub form</a>.` : "";
+      banners.push(`<div class="banner info">Decisions for ${waitingIds.length} lead(s) were sent to GitHub. Click Create there; they show here about 2 minutes later (use Refresh).${again}</div>`);
+    }
+    $("banners").innerHTML = banners.join("");
+    $("footer").innerHTML = `Next scheduled run: ${esc(fmt(data.next_run))}. Approvals open a pre-filled issue in <a href="https://github.com/${esc(data.repo)}/issues" target="_blank" rel="noopener">${esc(data.repo)}</a>; they need your GitHub login. The data on this page is encrypted and opens only with the password.`;
+    if (!batch) { $("leads").innerHTML = '<div class="empty">No batches yet. The weekly run drafts one every Wednesday.</div>'; return; }
+
+    const counts = batch.counts, labels = data.status_labels;
+    const chips = [`<span class="chip ${statusFilter === "all" ? "on" : ""}" data-status="all">All ${batch.leads.length}</span>`]
+      .concat(Object.keys(counts).map((k) => `<span class="chip ${statusFilter === k ? "on" : ""}" data-status="${esc(k)}">${esc(labels[k] || k)} ${counts[k]}</span>`));
+    $("chips").innerHTML = chips.join("");
+    const pending = batch.leads.filter((l) => l.status === "pending_approval" && !isWaiting(l));
+    $("approveAll").textContent = `Approve all awaiting (${pending.length})`;
+    $("approveAll").disabled = !pending.length;
+    $("downloadXlsx").disabled = !batch.review_file;
+    $("downloadReport").disabled = !data.latest_report;
+
+    const q = $("search").value.trim().toLowerCase();
+    const leads = batch.leads.filter((l) => (statusFilter === "all" || l.status === statusFilter)
+      && (!q || l.company.toLowerCase().includes(q) || (l.contact.email || "").toLowerCase().includes(q)));
+    $("leads").innerHTML = leads.length ? leads.map(card).join("") : '<div class="empty">No leads match.</div>';
+    updateSticky();
+  }
+
+  function card(l) {
+    const waiting = isWaiting(l);
+    const badge = waiting ? '<span class="badge b-submitted">Decision sent</span>' : `<span class="badge b-${esc(l.status)}">${esc(l.status_label)}</span>`;
+    const roles = l.roles.map((r) => {
+      const href = r.url || r.listing;  // the employer's own posting when known, else the job board listing
+      const main = href ? `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(r.title)}</a>` : esc(r.title);
+      const where = r.url ? "company job page" : "job board listing";
+      const extra = r.url && r.listing && r.listing !== r.url ? ` · <a href="${esc(r.listing)}" target="_blank" rel="noopener">job board listing</a>` : "";
+      return `<li>${main} <span class="muted">${where}, posted ${esc(r.posted)}</span>${extra}</li>`;
+    }).join("");
+    const c = l.contact;
+    const who = c.kind === "leader" ? `${esc(c.first_name)}${c.title ? ", " + esc(c.title) : ""}` : esc(c.kind || "inbox");
+    const leaders = l.leaders.length ? `<div class="label">Leaders named on their site</div><div class="value">${l.leaders.map((p) => `${esc(p.name)} (${esc(p.title)})`).join(", ")}</div>` : "";
+    const next = l.next_email.at ? `${esc(l.next_email.label)}: <strong>${esc(fmt(l.next_email.at))}</strong>` : esc(l.next_email.label);
+    const sent = l.emails.filter((e) => e.sent_at).map((e) => `Email ${e.step}: ${esc(fmt(e.sent_at))} (${esc(e.status)})`).join("<br>");
+    const choice = selection.get(l.id);
+    const actions = l.status === "pending_approval" && !waiting ? `<div class="actions">
+        <button data-act="approve" data-id="${l.id}" class="${choice === "approve" ? "sel-approve" : ""}">${choice === "approve" ? "✓ Approve" : "Approve"}</button>
+        <button data-act="reject" data-id="${l.id}" class="${choice === "reject" ? "sel-reject" : ""}">${choice === "reject" ? "✕ Reject" : "Reject"}</button></div>` : "";
+    const emails = l.emails.map((e) => `<div class="label">${e.step === 1 ? "Email 1" : "Follow-up " + (e.step - 1)} · ${esc(e.subject)}</div><pre class="email">${esc(e.text)}</pre>`).join("");
+    return `<article class="lead">
+      <div>
+        <h2>${l.website ? `<a href="${esc(l.website)}" target="_blank" rel="noopener">${esc(l.company)}</a>` : esc(l.company)} ${badge}
+          <span class="muted">Tier ${esc(l.tier || "-")} · score ${esc(l.score ?? "-")}</span></h2>
+        <div class="label">${l.roles.length} marketing role${l.roles.length === 1 ? "" : "s"}</div>
+        <ul class="roles">${roles}</ul>
+        ${l.opening_source ? `<div class="label">Opening line from</div><div class="value muted">${esc(l.opening_source)}</div>` : ""}
+      </div>
+      <div>
+        <div class="label">Email to</div>
+        <div class="value"><a href="mailto:${esc(c.email)}">${esc(c.email)}</a> <span class="muted">(${who})</span></div>
+        ${c.found_at ? `<div class="muted value">published at <a href="${esc(c.found_at)}" target="_blank" rel="noopener">${esc(c.found_at.replace(/^https?:\/\//, ""))}</a></div>` : ""}
+        ${leaders}
+        <div class="label">Next email</div><div class="value">${next}</div>
+        ${sent ? `<div class="label">Sent</div><div class="value">${sent}</div>` : ""}
+        ${l.stop_reason && l.status !== "pending_approval" ? `<div class="label">Note</div><div class="value muted">${esc(l.stop_reason)}</div>` : ""}
+        ${actions}
+      </div>
+      <details><summary>Preview the emails</summary>${emails}</details>
+    </article>`;
+  }
+
+  function updateSticky() {
+    const ids = [...selection.keys()].filter((id) => batch && batch.leads.some((l) => l.id === id));
+    const a = ids.filter((id) => selection.get(id) === "approve").length, r = ids.length - a;
+    $("sticky").style.display = ids.length ? "flex" : "none";
+    $("selSummary").textContent = `${a} to approve, ${r} to reject`;
+  }
+
+  function openDecisions(approve, reject, all) {
+    const names = (ids) => ids.map((id) => batch.leads.find((l) => l.id === id)?.company).filter(Boolean).join(", ");
+    const title = `Decisions: ${batch.week}, batch ${batch.id}`;
+    const lines = ["Decisions from the leads page. Click **Create** below to apply them; the page updates about 2 minutes later.", ""];
+    lines.push(all ? `- Approve every lead awaiting approval in batch ${batch.id}` : `- Approve (${approve.length}): ${names(approve) || "none"}`);
+    if (!all) lines.push(`- Reject (${reject.length}): ${names(reject) || "none"}`);
+    lines.push("", data.marker, `batch: ${batch.id}`, `approve: ${all ? "all" : approve.join(", ")}`, `reject: ${all ? "" : reject.join(", ")}`, "");
+    const url = `https://github.com/${data.repo}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(lines.join("\n"))}`;
+    lastDecisionUrl = url;
+    window.open(url, "_blank", "noopener");
+    markSubmitted(all ? batch.leads.filter((l) => l.status === "pending_approval").map((l) => l.id) : approve.concat(reject));
+    approve.concat(reject).forEach((id) => selection.delete(id));
+    render();
+  }
+
+  function download(name, blob) {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }
+  function downloadB64(file) {
+    download(file.name, new Blob([b64(file.b64)], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+  }
+  function csv() {
+    const head = ["Batch", "Week", "Company", "Website", "Tier", "Score", "Status", "Roles", "Job post URLs", "Listing URLs",
+      "Email to", "Contact type", "Contact name and title", "Email published at", "Leaders on their site", "Next email", "Next email time (Toronto)", "Email 1 subject", "Opening line from"];
+    const cell = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+    const rows = batch.leads.map((l) => [batch.id, batch.week, l.company, l.website, l.tier, l.score, l.status_label,
+      l.roles.map((r) => r.title).join("; "), l.roles.map((r) => r.url || "").filter(Boolean).join(" "), l.roles.map((r) => r.listing || "").filter(Boolean).join(" "),
+      l.contact.email, l.contact.kind, l.contact.kind === "leader" ? `${l.contact.first_name} (${l.contact.title || ""})` : "", l.contact.found_at,
+      l.leaders.map((p) => `${p.name} (${p.title})`).join("; "), l.next_email.label, l.next_email.at ? fmt(l.next_email.at) : "",
+      (l.emails[0] || {}).subject, l.opening_source]);
+    const text = "﻿" + [head].concat(rows).map((r) => r.map(cell).join(",")).join("\r\n");
+    download(`hiring-leads-batch-${batch.id}.csv`, new Blob([text], {type: "text/csv;charset=utf-8"}));
+  }
+
+  async function open(pw, remember) {
+    data = await load(pw);
+    password = pw;
+    if (remember) store.set(PW_KEY, pw);
+    $("gate").hidden = true; $("app").hidden = false;
+    render();
+  }
+
+  $("gateForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    $("gateError").textContent = "";
+    try { await open($("pw").value, $("remember").checked); }
+    catch (err) { $("gateError").textContent = err.name === "OperationError" ? "That password doesn't open this page." : err.message; }
+  });
+  $("week").addEventListener("change", () => { statusFilter = "all"; selection.clear(); render(); });
+  $("search").addEventListener("input", render);
+  $("chips").addEventListener("click", (e) => { const s = e.target.dataset.status; if (s) { statusFilter = s; render(); } });
+  $("leads").addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-act]"); if (!btn) return;
+    const id = Number(btn.dataset.id), act = btn.dataset.act;
+    selection.get(id) === act ? selection.delete(id) : selection.set(id, act);
+    render();
+  });
+  $("submitSel").addEventListener("click", () => {
+    const ids = [...selection.keys()].filter((id) => batch.leads.some((l) => l.id === id));
+    openDecisions(ids.filter((id) => selection.get(id) === "approve"), ids.filter((id) => selection.get(id) === "reject"), false);
+  });
+  $("clearSel").addEventListener("click", () => { selection.clear(); render(); });
+  $("approveAll").addEventListener("click", () => {
+    const n = batch.leads.filter((l) => l.status === "pending_approval" && !isWaiting(l)).length;
+    if (n && confirm(`Approve all ${n} leads awaiting approval in ${batch.week} (batch ${batch.id})?`)) openDecisions([], [], true);
+  });
+  $("downloadCsv").addEventListener("click", () => batch && csv());
+  $("downloadXlsx").addEventListener("click", () => batch && batch.review_file && downloadB64(batch.review_file));
+  $("downloadReport").addEventListener("click", () => data.latest_report && downloadB64(data.latest_report));
+  $("refresh").addEventListener("click", async () => {
+    const keep = $("week").value;
+    try { data = await load(password); $("week").innerHTML = ""; render(); $("week").value = keep; render(); }
+    catch (err) { alert(err.message); }
+  });
+
+  const saved = store.get(PW_KEY);
+  if (saved) {
+    open(saved, false).catch(() => { store.del(PW_KEY); $("gate").hidden = false; });
+  } else {
+    $("gate").hidden = false;
+  }
+})();
+</script>
+</body>
+</html>
